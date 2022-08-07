@@ -1,2 +1,5 @@
 /client/node_modules
 /client/package-lock.json
+/server/venv
+/server/.idea
+server/.DS_Store
