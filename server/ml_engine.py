@@ -43,6 +43,3 @@ def predict(lga_name, periods):
     return forecast_dict
 
 
-if __name__ == '__main__':
-    print(predict('Aurukun Shire', 5))
-
