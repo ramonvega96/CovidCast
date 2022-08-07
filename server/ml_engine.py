@@ -18,8 +18,6 @@ def predict(lga_name, periods):
                         FROM lga_infections where lga_name='""" + lga_name + """' order by notification_date""")
 
     rows = mycursor.fetchall()
-    mycursor.close()
-    mydb.close()
 
     rows_dict = dict((str(x), y) for x, y in rows)
     s = pd.Series(rows_dict)

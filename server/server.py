@@ -18,7 +18,7 @@ def lga_forecast():
         try:
             resp = predict(lga, periods)
         except Exception as e:
-            resp = {"Internal Error": e}
+            resp = {"Internal Error": str(e)}
     except:
         resp = {"Error": "Unable to parse provided arguments"}
 
