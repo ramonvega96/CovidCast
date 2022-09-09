@@ -1,0 +1,31 @@
+version: '3.7'
+
+services:
+  server:
+    container_name: server
+    build: ./server
+    environment:
+      - DB_HOST=covidcastdb
+      - DB_PORT=3306
+    ports:
+      - "8000:5000"
+    networks:
+        - covidcast-net
+  covidcastdb:
+    container_name: covidcastdb
+    platform: linux/x86_64
+    image: mysql:5.7
+    restart: unless-stopped
+    tty: true
+    command: --max_allowed_packet=250M
+    environment:
+        MYSQL_ROOT_PASSWORD: test
+        MYSQL_ROOT_HOST: '%'
+        MYSQL_DATABASE: covidcast
+    ports:
+        - '3306:3306'
+    networks:
+        - covidcast-net
+networks:
+    covidcast-net:
+        driver: bridge

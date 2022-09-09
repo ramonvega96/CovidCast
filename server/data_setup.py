@@ -3,9 +3,9 @@ import json
 import mysql.connector
 
 mydb = mysql.connector.connect(
-    host='localhost',
-    user='covidcastuser',
-    password='newpassword',
+    host='covidcastdb',
+    user='root',
+    password='test',
     database='covidcast'
 )
 

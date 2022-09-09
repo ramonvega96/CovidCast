@@ -13,14 +13,31 @@ class LGACard extends React.Component {
                     </div>
                     <div className="card-body">
                         <div className="row">
-                            <h5 className="card-title">Cases Trend</h5>
-                            <LGACardMiniChart data={this.props.data.minichart_data}/>
+                            <LGACardMiniChart data={this.props.data.mini_chart_data}/>
                         </div>
-                        <div className="stats-card">
-                            <div className="card text-bg-danger">
-                                <div className="card-body">
-                                    <h5 className="card-title">Total Cases</h5>
-                                    <h1 className="card-text">{this.props.data.infections_count}</h1>
+                        <div className="row">
+                            <div className="col-md-6">
+                                <div className="stats-card">
+                                    <div className="card text-bg-danger">
+                                        <div className="card-body">
+                                            <h1 className="stats-card-content">{
+                                                this.props.data.infections_count
+                                                    .toString()
+                                                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                            </h1>
+                                            <h5 className="stats-card-title">Total Cases</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-md-6">
+                                <div className="stats-card forecast-button-card">
+                                    <div className="card text-bg-info">
+                                        <div className="card-body">
+                                            <img src={require('./img/coding.png')} alt='CovidCast Logo'/>
+                                            <h5 className="stats-card-title">Forecast</h5>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>                            

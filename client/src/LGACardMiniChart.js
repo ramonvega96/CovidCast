@@ -11,7 +11,6 @@ import {
   } from 'chart.js';
   
 import { Line } from 'react-chartjs-2';
-import faker from 'faker';
 
 class LGACardMiniChart extends React.Component {
 	render() {
@@ -22,7 +21,8 @@ class LGACardMiniChart extends React.Component {
             PointElement,
             LineElement,
             Tooltip,
-            Legend
+            Legend,
+            Title
         );
 
         const options = {
@@ -33,7 +33,18 @@ class LGACardMiniChart extends React.Component {
                 },
                 labels: {
                     display: false
-                }
+                },
+                title: {
+                  display: true,
+                  text: 'Last 100 days',
+                  font: {
+                    size: 20
+                  },
+                  padding: {
+                      top: 10,
+                      bottom: 10,
+                  },
+                },
             },
             scales: {
                 x: {
@@ -49,14 +60,14 @@ class LGACardMiniChart extends React.Component {
               }
           };
 
-        const labels = ['', '', '', '', '', '', '', '', '', ''];
+        const labels = Array(this.props.data.length).join(".").split(".");;
 
 		const data = {
             labels,
             datasets: [
               {
-                label: 'Dataset 2',
-                data: this.props.data.split(","),
+                label: 'Covid Cases',
+                data: this.props.data,
                 borderColor: 'rgb(53, 162, 235)',
                 backgroundColor: 'rgba(53, 162, 235, 0.5)',
               },

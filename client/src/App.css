@@ -26,3 +26,32 @@
 .stats-card{
   margin: .5em;
 }
+
+.card-title{
+  margin-top: 8px;
+  text-align: center;
+}
+
+.stats-card-title{
+  text-align: center;
+}
+
+.stats-card-content{
+  text-align: center;
+}
+
+img {
+  display: block;
+  max-width:130px;
+  max-height:60px;
+  width: auto;
+  height: auto;
+  text-align: center;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.forecast-button-card{
+  cursor: pointer;
+}

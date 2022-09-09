@@ -2,22 +2,21 @@ import pandas as pd
 from prophet import Prophet
 import mysql.connector
 
-mydb = mysql.connector.connect(
-    host='localhost',
-    user='covidcastuser',
-    password='newpassword',
-    database='covidcast'
-)
-
-mycursor = mydb.cursor()
-
 
 def predict(lga_name, periods):
+    mydb = mysql.connector.connect(
+        host='covidcastdb',
+        user='root',
+        password='test',
+        database='covidcast'
+    )
 
-    mycursor.execute("""SELECT notification_date, infections_count 
+    my_cursor = mydb.cursor()
+
+    my_cursor.execute("""SELECT notification_date, infections_count 
                         FROM lga_infections where lga_name='""" + lga_name + """' order by notification_date""")
 
-    rows = mycursor.fetchall()
+    rows = my_cursor.fetchall()
 
     rows_dict = dict((str(x), y) for x, y in rows)
     s = pd.Series(rows_dict)
