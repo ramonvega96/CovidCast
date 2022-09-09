@@ -1,22 +1,14 @@
-# Pull latest official node image
-FROM node:latest
-
-# Expose ports
-EXPOSE 3000
-
-# Set working directory
+# Build step #1: build the React front end
+FROM node:16-alpine as build-step
 WORKDIR /app
-
-# add `/app/node_modules/.bin` to environment variables
 ENV PATH /app/node_modules/.bin:$PATH
+COPY package.json yarn.lock ./
+COPY ./src ./src
+COPY ./public ./public
+RUN yarn install
+RUN yarn build
 
-# Copy package files and install app dependencies
-COPY package.json /app/package.json
-RUN npm install
-RUN npm install react-scripts -g
-
-# Add React app to working directory
-ADD . /app
-
-# Start the React app
-CMD ["npm", "start"]
+# Build step #2: build an nginx container
+FROM nginx:stable-alpine
+COPY --from=build-step /app/build /usr/share/nginx/html
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
