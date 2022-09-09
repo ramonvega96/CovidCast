@@ -23,8 +23,8 @@ services:
     environment:
       - DB_HOST=covidcastdb
       - DB_PORT=3306
-    expose:
-      - 8000
+    ports:
+      - "8000:5000"
     networks:
       - covidcast-be
       - covidcast-fe
