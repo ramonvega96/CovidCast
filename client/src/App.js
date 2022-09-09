@@ -20,7 +20,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {    
-    fetch(process.env.REACT_APP_SERVER_URL + "/api/infections-count")
+    fetch("/api/infections-count")
         .then((res) => res.json())
         .then((json) => {
             this.setState({
