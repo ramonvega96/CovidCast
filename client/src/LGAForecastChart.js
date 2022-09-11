@@ -12,7 +12,7 @@ import {
   
 import { Line } from 'react-chartjs-2';
 
-class LGACardMiniChart extends React.Component {
+class LGAForecastChart extends React.Component {
 	render() {
 
         ChartJS.register(
@@ -25,13 +25,10 @@ class LGACardMiniChart extends React.Component {
             Title
         );
 
+
+
         const options = {
             responsive: true,
-            elements: {
-              point:{
-                  radius: 0
-              }
-            },
             plugins: {
                 legend: {
                     display: false
@@ -41,7 +38,7 @@ class LGACardMiniChart extends React.Component {
                 },
                 title: {
                   display: true,
-                  text: 'Last 100 days',
+                  text: 'Next '+ Object.keys(this.props.data).length + ' days',
                   font: {
                     size: 20
                   },
@@ -65,22 +62,30 @@ class LGACardMiniChart extends React.Component {
               }
           };
 
-        const labels = Array(this.props.data.length).join(".").split(".");;
+        const tempLabels = Object.keys(this.props.data);
+        let labels = [];
+        let dataPoints = [];
 
-		const data = {
-            labels,
-            datasets: [
-              {
-                label: 'Covid Cases',
-                data: this.props.data,
-                borderColor: 'rgb(53, 162, 235)',
-                backgroundColor: 'rgba(53, 162, 235, 0.5)',
-              },
-            ],
-          };
+        for (let i = 0; i < tempLabels.length; i++) { 
+          dataPoints.push(this.props.data[tempLabels[i]]["yhat"]);
+          if(i === 0 || i === tempLabels.length - 1) labels.push(tempLabels[i].split(" ")[0]);
+          else labels.push("");
+        }
+
+        const data = {
+                labels,
+                datasets: [
+                  {
+                    label: 'Covid Cases',
+                    data: dataPoints,
+                    borderColor: 'rgb(53, 162, 235)',
+                    backgroundColor: 'rgba(53, 162, 235, 0.5)',
+                  },
+                ],
+              };
           
           return <Line options={options} data={data} />;
 	}
 }
 
-export default LGACardMiniChart;
+export default LGAForecastChart;

@@ -34,9 +34,13 @@ def get_all_infections_count():
                 arr.append(obj)
 
         resp = {"data": arr}
+        my_cursor.close()
+        mydb.close()
 
     except Exception as e:
         resp = {"Internal Error": str(e)}
+        my_cursor.close()
+        mydb.close()
 
     return resp
 

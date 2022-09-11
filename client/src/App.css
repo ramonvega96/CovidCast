@@ -55,3 +55,8 @@ img {
 .forecast-button-card{
   cursor: pointer;
 }
+
+.loading-wait{
+  padding: 70px 0;
+  text-align: center;
+}

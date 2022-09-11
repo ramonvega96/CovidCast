@@ -1,4 +1,5 @@
 import React from "react";
+import Spinner from 'react-bootstrap/Spinner';
 import './App.css';
 import LGACard from './LGACard';
 class App extends React.Component {
@@ -28,12 +29,18 @@ class App extends React.Component {
                 DataisLoaded: true
             });
         });
-}
+  }
   
   render(){
     const { DataisLoaded, items } = this.state;
-        if (!DataisLoaded) return <div>
-            <h1> Pleses wait some time.... </h1> </div> ;
+        if (!DataisLoaded) return <div className='loading-wait'>
+            <h1>Loading data - Please wait.</h1> 
+            <Spinner animation="grow" variant="primary" />
+            <Spinner animation="grow" variant="secondary" />
+            <Spinner animation="grow" variant="success" />
+            <Spinner animation="grow" variant="warning" />
+            <Spinner animation="grow" variant="info" />
+          </div> ;
     
     return (
       <div>
