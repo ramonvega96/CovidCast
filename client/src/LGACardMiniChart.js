@@ -27,6 +27,7 @@ class LGACardMiniChart extends React.Component {
 
         const options = {
             responsive: true,
+            maintainAspectRatio: false,
             elements: {
               point:{
                   radius: 0
@@ -41,7 +42,7 @@ class LGACardMiniChart extends React.Component {
                 },
                 title: {
                   display: true,
-                  text: 'Last 100 days',
+                  text: 'Reported COVID-19 Cases',
                   font: {
                     size: 20
                   },
@@ -72,6 +73,8 @@ class LGACardMiniChart extends React.Component {
             datasets: [
               {
                 label: 'Covid Cases',
+                lineTension: 0.4,
+                borderWidth: 1,
                 data: this.props.data,
                 borderColor: 'rgb(53, 162, 235)',
                 backgroundColor: 'rgba(53, 162, 235, 0.5)',

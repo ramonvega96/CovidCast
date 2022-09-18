@@ -37,9 +37,14 @@ def predict(lga_name, periods):
     forecast_dict = forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].tail(periods).set_index('ds').T.to_dict()
     forecast_dict = {str(k):v for k,v in forecast_dict.items()}
 
+    resp = {
+        "forecast": forecast_dict,
+        "last_100": dict((str(x), y) for x, y in list(s.to_dict().items())[-30:])
+    }
+
     my_cursor.close()
     mydb.close()
 
-    return forecast_dict
+    return resp
 
 

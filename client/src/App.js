@@ -34,7 +34,7 @@ class App extends React.Component {
   render(){
     const { DataisLoaded, items } = this.state;
         if (!DataisLoaded) return <div className='loading-wait'>
-            <h1>Loading data - Please wait.</h1> 
+            <h1>Loading data - Please wait</h1> 
             <Spinner animation="grow" variant="primary" />
             <Spinner animation="grow" variant="secondary" />
             <Spinner animation="grow" variant="success" />

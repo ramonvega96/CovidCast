@@ -22,11 +22,11 @@ def get_all_infections_count():
 
         for i in rows_dict:
             my_cursor.execute("""SELECT INFECTIONS_COUNT FROM covidcast.lga_infections 
-                                            WHERE LGA_NAME='""" + i + """' order by NOTIFICATION_DATE desc limit 100;""")
+                                            WHERE LGA_NAME='""" + i + """' order by NOTIFICATION_DATE desc;""")
 
             infections_list = my_cursor.fetchall()
 
-            if rows_dict[i] > 100:
+            if rows_dict[i] > 1000:
                 obj = dict()
                 obj["lga_name"] = i
                 obj["infections_count"] = rows_dict[i]

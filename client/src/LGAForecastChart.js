@@ -25,51 +25,59 @@ class LGAForecastChart extends React.Component {
             Title
         );
 
-
-
         const options = {
             responsive: true,
+            maintainAspectRatio: false,
+            elements: {
+              point:{
+                  radius: 2
+              }
+            },          
             plugins: {
-                legend: {
-                    display: false
+              legend: {
+                  display: false
+              },
+              title: {
+                display: true,
+                text: 'Last 30 Days Infections + Next '+ Object.keys(this.props.data.forecast).length + ' Days Forecast',
+                position: 'bottom',
+                font: {
+                  size: 20
                 },
-                labels: {
-                    display: false
+                padding: {
+                    top: 5,
+                    bottom: 10,
                 },
-                title: {
-                  display: true,
-                  text: 'Next '+ Object.keys(this.props.data).length + ' days',
-                  font: {
-                    size: 20
-                  },
-                  padding: {
-                      top: 10,
-                      bottom: 10,
-                  },
-                },
+              },
+            },
+            interaction: {
+              intersect: false,
+              mode: 'index',
             },
             scales: {
-                x: {
-                  grid: {
-                    display: false
-                  }
-                },
-                y: {
-                  grid: {
-                    display: false
-                  }
+              x: {
+                grid: {
+                  display: false
                 }
-              }
+              },
+            }
           };
 
-        const tempLabels = Object.keys(this.props.data);
+        
         let labels = [];
         let dataPoints = [];
 
+        let tempLabels = Object.keys(this.props.data.last_100);
         for (let i = 0; i < tempLabels.length; i++) { 
-          dataPoints.push(this.props.data[tempLabels[i]]["yhat"]);
-          if(i === 0 || i === tempLabels.length - 1) labels.push(tempLabels[i].split(" ")[0]);
-          else labels.push("");
+          dataPoints.push(this.props.data.last_100[tempLabels[i]]);
+          labels.push("");
+        }
+
+        tempLabels = Object.keys(this.props.data.forecast);
+        for (let i = 0; i < tempLabels.length; i++) {
+          if(this.props.data.forecast[tempLabels[i]]["yhat"] > 0) dataPoints.push(Math.round(this.props.data.forecast[tempLabels[i]]["yhat"]));
+          else dataPoints.push(0);
+          labels.push("");
         }
 
         const data = {
@@ -77,9 +85,18 @@ class LGAForecastChart extends React.Component {
                 datasets: [
                   {
                     label: 'Covid Cases',
+                    lineTension: 0.4,
                     data: dataPoints,
                     borderColor: 'rgb(53, 162, 235)',
                     backgroundColor: 'rgba(53, 162, 235, 0.5)',
+                    segment: {
+                      borderColor: (ctx) => {
+                        return ctx.p1DataIndex >= 30 ? 'rgb(0,0,0,0.2)' : undefined
+                      },
+                      borderDash: (ctx) => {
+                        return ctx.p1DataIndex >= 30 ? [6, 3] : undefined
+                      }
+                    }
                   },
                 ],
               };
