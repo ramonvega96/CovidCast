@@ -12,11 +12,11 @@ class LGACard extends React.Component {
 
     constructor(props) {
         super(props);
-    
         this.state = {
             showModal: false,
             periodsRangeValue: 5,
-            forecast_chart_data: {}
+            forecast_chart_data: {},
+            face_mask_filter: false
         };
     }
 
@@ -24,7 +24,6 @@ class LGACard extends React.Component {
         this.setState({
             showModal: true
         });
-
         fetch("/api/forecast?lga="+this.props.data.lga_name.replace(" ","%20")+ "&periods=5")
         .then((res) => res.json())
         .then((json) => {
@@ -38,16 +37,17 @@ class LGACard extends React.Component {
         this.setState({
             showModal: false,
             periodsRangeValue: 5,
-            forecast_chart_data: {}
+            forecast_chart_data: {},
+            face_mask_filter: false
         })
     }
 
     handlePeriodsRangeChange(e){
         this.setState({
             periodsRangeValue: e.target.value,
-            forecast_chart_data: {}
+            forecast_chart_data: {},
+            face_mask_filter: false
         });
-
         fetch("/api/forecast?lga="+this.props.data.lga_name.replace(" ","%20")+ "&periods=" + e.target.value)
         .then((res) => res.json())
         .then((json) => {
@@ -55,6 +55,20 @@ class LGACard extends React.Component {
                 forecast_chart_data: json
             });
         });
+    }
+
+    handleMaskFilterChange(e){
+        if(Object.keys(this.state.forecast_chart_data).length > 0){
+            let tempData = JSON.parse(JSON.stringify(this.state.forecast_chart_data));
+            for(let i = 0; i < Object.keys(this.state.forecast_chart_data.forecast).length; i++){
+                const k = Object.keys(this.state.forecast_chart_data.forecast)[i]
+                tempData["forecast"][k]["yhat"] = e.currentTarget.checked ? tempData["forecast"][k]["yhat"] * 0.8 : tempData["forecast"][k]["yhat"] / 0.8;
+            }
+            this.setState({
+                face_mask_filter: e.currentTarget.checked,
+                forecast_chart_data: tempData
+            });
+        }
     }
 
     render(){
@@ -109,33 +123,46 @@ class LGACard extends React.Component {
                                 <Spinner animation="grow" variant="warning" />
                                 <Spinner animation="grow" variant="info" />
                             </div> : <div style={{height:'300px'}}> <LGAForecastChart data={this.state.forecast_chart_data}/> </div>}                        
-                        Forecasted Periods: {this.state.periodsRangeValue}
-                        <Form.Range min="5" max="30" step="5" value={this.state.periodsRangeValue} onChange={this.handlePeriodsRangeChange.bind(this)}/>
+                        <p>
+                            <strong>Forecasted Periods: </strong>{this.state.periodsRangeValue}
+                        </p>
+                        <div>
+                            <Form.Range style={{width: '100%', paddingLeft:"15px", paddingRight:"15px"}} min="5" max="30" step="5" value={this.state.periodsRangeValue} onChange={this.handlePeriodsRangeChange.bind(this)}/>
+                        </div>
+                        <p>
+                            <strong>80% Facemask Usage Filter:</strong>
+                        </p>
+                        <div style={{marginBottom:"10px", textAlign:"center"}}>
+                            <label className="switch">
+                                <input type="checkbox" onChange={this.handleMaskFilterChange.bind(this)} checked={this.state.face_mask_filter}/>
+                                <span className="slider round"></span>
+                            </label>
+                        </div>
                         <div style={{overflow: 'scroll', height:'200px'}}> 
-                        <Table striped bordered hover>
-                            <thead>
-                                <tr>
-                                    <th>Period</th>
-                                    <th>Date</th>
-                                    <th>Forecast</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {this.state.forecast_chart_data.forecast && Object.keys(this.state.forecast_chart_data.forecast).map((k, index)=>{
-                                    const today = new Date();
-                                    today.setDate(today.getDate() + index);
-                                    const dd = String(today.getDate()).padStart(2, '0');
-                                    const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-                                    const yyyy = today.getFullYear();
-                                    const d = mm + '/' + dd + '/' + yyyy;
-                                    return <tr key={k}>
-                                        <td>{index + 1}</td>
-                                        <td>{d}</td>
-                                        <td>{this.state.forecast_chart_data.forecast[k]["yhat"] > 0 ? Math.round(this.state.forecast_chart_data.forecast[k]["yhat"]) : 0}</td>
+                            <Table striped bordered hover>
+                                <thead>
+                                    <tr>
+                                        <th>Period</th>
+                                        <th>Date</th>
+                                        <th>Forecast</th>
                                     </tr>
-                                })}
-                            </tbody>
-                        </Table>
+                                </thead>
+                                <tbody>
+                                    {this.state.forecast_chart_data.forecast && Object.keys(this.state.forecast_chart_data.forecast).map((k, index)=>{
+                                        const today = new Date();
+                                        today.setDate(today.getDate() + index);
+                                        const dd = String(today.getDate()).padStart(2, '0');
+                                        const mm = String(today.getMonth() + 1).padStart(2, '0');
+                                        const yyyy = today.getFullYear();
+                                        const d = mm + '/' + dd + '/' + yyyy;
+                                        return <tr key={k}>
+                                            <td>{index + 1}</td>
+                                            <td>{d}</td>
+                                            <td>{this.state.forecast_chart_data.forecast[k]["yhat"] > 0 ? Math.round(this.state.forecast_chart_data.forecast[k]["yhat"]) : 0}</td>
+                                        </tr>
+                                    })}
+                                </tbody>
+                            </Table>
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
@@ -147,7 +174,6 @@ class LGACard extends React.Component {
             </div>
         );
     }
-    
 }
 
 export default LGACard;

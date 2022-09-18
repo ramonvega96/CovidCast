@@ -46,7 +46,7 @@ class LGAForecastChart extends React.Component {
                 },
                 padding: {
                     top: 5,
-                    bottom: 10,
+                    bottom: 20,
                 },
               },
             },
