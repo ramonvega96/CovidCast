@@ -45,7 +45,7 @@ class App extends React.Component {
     return (
       <div>
         <div className='lga-search-bar'>
-          <input className='lga-input' placeholder='LGA name' value={this.state.input} type="text" onChange={this.onChangeHandler.bind(this)}/>
+          <input className='lga-input' placeholder='Local Government Area Name' value={this.state.input} type="text" onChange={this.onChangeHandler.bind(this)}/>
         </div>
         <div className="cards-section row row-cols-1 row-cols-md-4 g-4">
         {
