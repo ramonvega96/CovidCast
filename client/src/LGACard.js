@@ -154,7 +154,7 @@ class LGACard extends React.Component {
                             <li className="nav-item">
                                 <a className={this.state.active_tab === 0 ? "nav-link active" : "nav-link"} 
                                     aria-current="page" href="/#" 
-                                    onClick={() => this.handleTabChange(0)}>Forecast</a>
+                                    onClick={() => this.handleTabChange(0)}>Predictions</a>
                             </li>
                             <li className="nav-item">
                                 <a className={this.state.active_tab === 1 ? "nav-link active" : "nav-link"} 
