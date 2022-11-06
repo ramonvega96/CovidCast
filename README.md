@@ -20,3 +20,5 @@ Now that you are in the server container. Execute the Python script for populati
 ```
 python3 data_setup.py
 ```
+
+Now you should be able to go to localhost:80 in your browser and you should be able to see CovidCast live.
